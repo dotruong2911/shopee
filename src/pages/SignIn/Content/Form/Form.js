@@ -1,4 +1,4 @@
-import { Box, Button, Paper, TextField, Typography } from '@mui/material';
+import { Button, Paper, TextField, Typography } from '@mui/material';
 import styles from './Form.module.scss';
 
 function Form() {
@@ -6,7 +6,7 @@ function Form() {
     <>
       <Paper className={styles.container}>
         <Typography component="h1" variant="h6">
-          Đăng ký
+          Đăng nhập
         </Typography>
         <TextField
           placeholder="Số điện thoại"
@@ -19,10 +19,10 @@ function Form() {
           size="small"
           style={{ width: '80%' }}
         ></TextField>
-        <button className={styles.btn}>Đăng ký</button>
+        <button className={styles.btn}>Đăng nhập</button>
         <Typography component="p" variant="small">
-          Bạn đã có tài khoản ?
-          <span style={{ color: 'rgb(238, 77, 45)' }}>Đăng nhập</span>
+          Bạn mới biết đến shoppe ?
+          <span style={{ color: 'rgb(238, 77, 45)' }}>Đăng ký</span>
         </Typography>
       </Paper>
     </>

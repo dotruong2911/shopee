@@ -1,0 +1,11 @@
+.container {
+  height: 100vh;
+
+  .appbar {
+    height: 80px;
+  }
+
+  .content {
+    height: calc(100vh - 80px);
+  }
+}

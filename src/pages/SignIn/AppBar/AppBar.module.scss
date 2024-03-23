@@ -1,0 +1,13 @@
+.container {
+  background-color: white;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 100%;
+
+  .logo {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+}
