@@ -3,20 +3,24 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { image } from 'assets/image';
 import styles from './AppBar.module.scss';
+import { Link } from 'react-router-dom';
 
 export default function AppBarr() {
   console.log(image.logo);
   return (
     <Box className={styles.container}>
       <div className={styles.logo}>
-        <img
-          src={image.logo}
-          alt="shopee"
-          style={{
-            height: '40px',
-            translate: '0 -5px',
-          }}
-        />
+        <Link to="/">
+          <img
+            className={styles.img}
+            src={image.logo}
+            alt="shopee"
+            style={{
+              height: '40px',
+              translate: '0 -5px',
+            }}
+          />
+        </Link>
         <Typography variant="h6" component="p">
           Đăng nhập
         </Typography>
@@ -24,7 +28,7 @@ export default function AppBarr() {
       <Typography
         variant="small"
         component="span"
-        sx={{ color: 'rgb(238, 77, 45)' }}
+        sx={{ color: 'var(--orange)' }}
       >
         Bạn cần giúp đỡ?
       </Typography>

@@ -1,5 +1,6 @@
 import { Box, Button, Paper, TextField, Typography } from '@mui/material';
 import styles from './Form.module.scss';
+import { Link } from 'react-router-dom';
 
 function Form() {
   return (
@@ -22,7 +23,9 @@ function Form() {
         <button className={styles.btn}>Đăng ký</button>
         <Typography component="p" variant="small">
           Bạn đã có tài khoản ?
-          <span style={{ color: 'rgb(238, 77, 45)' }}>Đăng nhập</span>
+          <Link to="/signin" style={{ textDecoration: 'none' }}>
+            <span style={{ color: 'rgb(238, 77, 45)' }}>Đăng nhập</span>
+          </Link>
         </Typography>
       </Paper>
     </>

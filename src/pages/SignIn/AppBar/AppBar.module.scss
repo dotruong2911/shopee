@@ -9,5 +9,10 @@
     display: flex;
     gap: 20px;
     align-items: center;
+
+    .img {
+      filter: invert(48%) sepia(50%) saturate(6741%) hue-rotate(346deg)
+        brightness(98%) contrast(91%);
+    }
   }
 }
