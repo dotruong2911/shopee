@@ -3,17 +3,19 @@ import AppBar from './AppBar/AppBar';
 import styles from './Home.module.scss';
 import Content from './Content/Content';
 import { Box, Container } from '@mui/material';
+import ProductInfo from './Content/Products/Product/ProductInfo/ProductInfo';
+import Product from './Content/Products/Product/Product';
 
 function Home() {
   return (
-    <Container className={styles.container}>
-      <Box className={styles.appbar}>
+    <div className={styles.container}>
+      <div className={styles.appbar}>
         <AppBar />
-      </Box>
-      <Box className={styles.content}>
+      </div>
+      <div className={styles.content}>
         <Content />
-      </Box>
-    </Container>
+      </div>
+    </div>
   );
 }
 

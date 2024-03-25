@@ -11,7 +11,6 @@ function AppBar() {
       style={{
         height: '100%',
         width: '100%',
-        margin: '0 auto',
       }}
     >
       <div className={styles.container}>
@@ -19,7 +18,7 @@ function AppBar() {
         <Box className={styles.search}>
           <input
             className={styles.inputs}
-            placeholder="shopee"
+            placeholder="Tìm kiếm sản phẩm"
             style={{
               border: 'none',
               outline: 'none',

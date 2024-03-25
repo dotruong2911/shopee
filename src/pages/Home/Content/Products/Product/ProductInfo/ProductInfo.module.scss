@@ -1,0 +1,14 @@
+.btn {
+  width: 250px;
+  height: 60px;
+  border: 1px solid var(--orange);
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  color: var(--orange);
+  &:hover {
+    background-color: #efd2ccfa;
+  }
+}
