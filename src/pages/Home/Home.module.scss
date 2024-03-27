@@ -3,16 +3,17 @@
   width: 100%;
 
   .appbar {
-    height: 120px;
+    height: 80px;
     width: 100%;
     background-color: var(--orange);
     padding: 0 10%;
   }
 
   .content {
-    height: calc(100vh - 120px);
+    height: calc(100vh - 80px);
     width: 100%;
     background-color: #e8e8e8;
     padding: 0 10%;
+    overflow: scroll;
   }
 }

@@ -26,7 +26,13 @@ function Product() {
           <Grid item md={3}>
             <Paper
               elevation={10}
-              sx={{ width: '200px', p: '10px', gap: '20px', cursor: 'pointer' }}
+              sx={{
+                width: '200px',
+                p: '10px',
+                gap: '20px',
+                cursor: 'pointer',
+                mb: '20px',
+              }}
               className={styles.paper}
             >
               <img
@@ -40,11 +46,12 @@ function Product() {
                 sx={{
                   fontWeight: '400',
                   mb: '5px',
-                  height: '40px',
+                  height: '39px',
                   display: '-webkit-box',
                   WebkitLineClamp: '2',
                   WebkitBoxOrient: 'vertical',
                   overflow: 'hidden',
+                  textOverflow: 'ellipsis',
                 }}
               >
                 {data.name}
@@ -73,7 +80,7 @@ function Product() {
                 name="read-only"
                 value={Math.round(data.rating)}
                 readOnly
-                sx={{ fontSize: '10px', ml: '70px' }}
+                sx={{ fontSize: '10px' }}
               />
               <Typography
                 component="span"
