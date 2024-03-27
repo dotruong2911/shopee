@@ -6,7 +6,6 @@ import styles from './AppBar.module.scss';
 import { Link } from 'react-router-dom';
 
 export default function AppBarr() {
-  console.log(image.logo);
   return (
     <Box className={styles.container}>
       <div className={styles.logo}>

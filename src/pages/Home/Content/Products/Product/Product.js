@@ -1,30 +1,34 @@
 import { Grid, Paper, Rating, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import styles from './Product.module.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectProduct } from '../../../../../redux/reducer';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Product() {
+  const listProduct = useSelector((state) => state.listProduct.list);
+
   useEffect(() => {
-    (async () => {
-      try {
-        const response = await axios.get(
-          'https://api-ecom.duthanhduoc.com/products?page=1&limit=10'
-        );
-        setProducts(response.data.data.products);
-      } catch (error) {
-        console.error(error);
-      }
-    })();
-  }, []);
+    setProducts(listProduct);
+  }, [listProduct]);
 
   const [products, setProducts] = useState([]);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleSelect = (e) => {
+    dispatch(selectProduct(e.target.parentElement.getAttribute('name')));
+    console.log(e.target.parentElement.getAttribute('name'));
+    navigate('productinfo');
+  };
 
   return (
     <Grid container>
       {products.map((data) => {
         return (
-          <Grid item md={3}>
+          <Grid item md={3} onClick={handleSelect}>
             <Paper
+              name={data._id}
               elevation={10}
               sx={{
                 width: '200px',

@@ -1,9 +1,35 @@
 import { Box, Paper, TextField, Typography } from '@mui/material';
 import styles from './Form.module.scss';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
 
 function Form() {
+  const notify = () => toast('Đăng ký tài khoản thành công');
+
+  const [phone, setPhone] = useState([]);
+
+  const [isSuccess, setIsSuccess] = useState('false');
+
+  useEffect(() => {
+    async function getData() {
+      try {
+        const response = await axios.get('http://localhost:3000/user');
+        setPhone(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    getData();
+  }, [isSuccess]);
+
+  const list = phone.map((item) => {
+    return item.data.phone;
+  });
+
   const [input, setInput] = useState({
     phone: '',
     name: '',
@@ -26,7 +52,11 @@ function Form() {
     }
     const check = /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/;
     if (!check.test(input.phone)) {
-      inputError.phone = 'không hợp lệ';
+      inputError.phone = 'số điện thoại không hợp lệ';
+    }
+
+    if (list.includes(input.phone)) {
+      inputError.phone = 'số điện thoại đã tồn tại';
     }
   };
 
@@ -37,9 +67,22 @@ function Form() {
   };
 
   const checkPassword = () => {
-    if (!input.name) {
-      inputError.name = 'không được để trống';
+    if (!input.password) {
+      inputError.password = 'không được để trống';
     }
+
+    const check =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,30}$/;
+
+    if (input.password && !check.test(input.password)) {
+      inputError.password = 'mật khẩu không hợp lệ';
+    }
+  };
+
+  const post = (data) => {
+    axios.post('http://localhost:3000/user', {
+      data,
+    });
   };
 
   const handleInput = (e) => {
@@ -53,13 +96,32 @@ function Form() {
     e.preventDefault();
     checkPhone();
     checkName();
-    if (Object.keys(!inputError)) {
+    checkPassword();
+
+    if (Object.keys(inputError)) {
       setError({ ...inputError });
+    }
+
+    if (
+      input.name &&
+      input.phone &&
+      input.password &&
+      Object.keys(inputError).length === 0
+    ) {
+      post(input);
+      setInput({
+        phone: '',
+        name: '',
+        password: '',
+      });
+      notify();
+      setIsSuccess('true');
     }
   };
   return (
     <>
       <Paper className={styles.container}>
+        <ToastContainer />
         <Typography component="h1" variant="h6">
           Đăng ký
         </Typography>
