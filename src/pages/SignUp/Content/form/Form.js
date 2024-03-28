@@ -1,6 +1,6 @@
 import { Box, Paper, TextField, Typography } from '@mui/material';
 import styles from './Form.module.scss';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -92,6 +92,7 @@ function Form() {
     });
   };
 
+  const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
     checkPhone();
@@ -116,6 +117,9 @@ function Form() {
       });
       notify();
       setIsSuccess('true');
+      setTimeout(() => {
+        navigate('/signin');
+      }, 1500);
     }
   };
   return (
@@ -173,7 +177,7 @@ function Form() {
         <button className={styles.btn} type="submit" onClick={handleSubmit}>
           Đăng ký
         </button>
-        <Typography component="p" variant="small">
+        <Typography component="p" variant="small" mb="15px">
           Bạn đã có tài khoản ?
           <Link to="/signin" style={{ textDecoration: 'none' }}>
             <span style={{ color: 'rgb(238, 77, 45)' }}>Đăng nhập</span>

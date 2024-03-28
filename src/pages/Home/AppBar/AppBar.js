@@ -3,7 +3,7 @@ import styles from './AppBar.module.scss';
 import SearchIcon from '@mui/icons-material/Search';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Box, Avatar, Stack } from '@mui/material';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import LogOut from './Menu/LogOut';
 import { addUser } from '../../../redux/reducer';
@@ -36,9 +36,11 @@ function AppBar() {
   };
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const logOut = () => {
     setTimeout(() => {
       dispatch(addUser(''));
+      navigate('/');
     }, 1000);
   };
 
@@ -51,7 +53,9 @@ function AppBar() {
       }}
     >
       <div className={styles.container}>
-        <img src={image.logo} alt="shopee" className={styles.logo}></img>
+        <Link to="/">
+          <img src={image.logo} alt="shopee" className={styles.logo}></img>
+        </Link>
         <Box className={styles.search}>
           <input
             className={styles.inputs}
@@ -71,13 +75,15 @@ function AppBar() {
 
         {abc && (
           <>
-            <ShoppingCartIcon sx={{ color: 'white', fontSize: '35px' }} />
+            <Link to="/cart">
+              <ShoppingCartIcon sx={{ color: 'white', fontSize: '35px' }} />
+            </Link>
 
             <LogOut
               name={
                 <>
                   <Stack>
-                    <Avatar {...stringAvatar(`${abc.toUpperCase()}`)} />
+                    <Avatar {...stringAvatar(abc.toUpperCase())} />
                   </Stack>
                 </>
               }

@@ -5,10 +5,7 @@ function Content() {
   return (
     <Container>
       <Grid container>
-        <Grid item md={2.5} sx={{ border: '1px solid black' }}>
-          abc
-        </Grid>
-        <Grid item md={9.5}>
+        <Grid item md={12}>
           <Product />
         </Grid>
       </Grid>

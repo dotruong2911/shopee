@@ -7,6 +7,7 @@ import axios from 'axios';
 import { addList } from '../../redux/reducer';
 import ProductInfo from './Content/Products/Product/ProductInfo/ProductInfo';
 import { Routes, Route, Link, NavLink, Outlet } from 'react-router-dom';
+import Cart from 'pages/Cart/Cart';
 
 function Home() {
   const dispatch = useDispatch();
@@ -15,7 +16,7 @@ function Home() {
     async function getData() {
       try {
         const response = await axios.get(
-          'https://api-ecom.duthanhduoc.com/products?page=1&limit=16'
+          'https://api-ecom.duthanhduoc.com/products?page=1&limit=20'
         );
         dispatch(addList(response.data.data.products));
       } catch (error) {
@@ -31,11 +32,13 @@ function Home() {
         <AppBar />
       </div>
       <div className={styles.content}>
-        <Content />
         <Routes>
-          <Route path="productinfo" element={<ProductInfo />}></Route>
+          <Route path="/home" element={<Content />} />
+          <Route path="/" element={<Content />} />
+          <Route path="/cart" element={<Cart />} />
+
+          <Route path="/id" element={<ProductInfo />} />
         </Routes>
-        <Outlet />
       </div>
     </div>
   );

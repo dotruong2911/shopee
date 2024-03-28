@@ -75,7 +75,7 @@ function Form() {
       setError(inputError);
     }
     if (!Object.keys(inputError).length) {
-      navigate('/');
+      navigate('/home');
     }
     const getNameUser = listUser.find((item) => {
       return (item.phone = input.phone);

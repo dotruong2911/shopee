@@ -19,15 +19,16 @@ function Product() {
   const handleSelect = (e) => {
     dispatch(selectProduct(e.target.parentElement.getAttribute('name')));
     console.log(e.target.parentElement.getAttribute('name'));
-    navigate('productinfo');
+    navigate('/id');
   };
 
   return (
     <Grid container>
       {products.map((data) => {
         return (
-          <Grid item md={3} onClick={handleSelect}>
+          <Grid item md={2.4}>
             <Paper
+              onClick={handleSelect}
               name={data._id}
               elevation={10}
               sx={{
@@ -41,7 +42,7 @@ function Product() {
             >
               <img
                 src={data.image}
-                style={{ width: '100%' }}
+                style={{ width: '100%', height: '200px' }}
                 alt="images"
               ></img>
               <Typography

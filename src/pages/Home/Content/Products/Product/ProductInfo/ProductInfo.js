@@ -4,20 +4,21 @@ import AddIcon from '@mui/icons-material/Add';
 import HorizontalRuleIcon from '@mui/icons-material/HorizontalRule';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import styles from './ProductInfo.module.scss';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { addProduct } from '../../../../../../redux/reducer';
 
 function ProductInfo() {
   const idProduct = useSelector((state) => state.productCurrent.id);
   const listProduct = useSelector((state) => state.listProduct.list);
-  console.log('productInfo');
 
   const productCurrent = listProduct.find((item) => {
     return item._id === idProduct;
   });
+  console.log(productCurrent);
 
   useEffect(() => {
     setData(productCurrent);
-    setDatas(listProduct[3].images);
+    setDatas(productCurrent.images);
   }, []);
 
   const [data, setData] = useState([]);
@@ -43,9 +44,13 @@ function ProductInfo() {
     }
   };
 
+  const dispatch = useDispatch();
+  const handleProduct = () => {
+    dispatch(addProduct(productCurrent));
+  };
+
   return (
     <Paper sx={{ p: '20px 10px' }}>
-      <Typography>abcs</Typography>
       <Grid container>
         <Grid item md={5} sx={{ m: '0 auto' }}>
           <img
@@ -53,31 +58,32 @@ function ProductInfo() {
             alt="img"
             style={{ width: '95%', marginBottom: '20px' }}
           ></img>
-          {/* <Box
-              sx={{
-                height: '55px',
-                width: '95%',
-                overflow: 'hidden',
-                display: 'flex',
-              }}
-            >
-              {arr.map((item) => {
-                return (
-                  <img
-                    key={item}
-                    name={item}
-                    src={item}
-                    alt="item"
-                    onClick={checkId}
-                    style={{
-                      cursor: 'pointer',
-                      marginRight: '10px',
-                      border: '1px solid #ddd',
-                    }}
-                  ></img>
-                );
-              })}
-            </Box> */}
+          <Box
+            sx={{
+              ml: '15px',
+              height: '55px',
+              width: '91%',
+              overflow: 'hidden',
+              display: 'flex',
+            }}
+          >
+            {arr.map((item) => {
+              return (
+                <img
+                  key={item}
+                  name={item}
+                  src={item}
+                  alt="item"
+                  onClick={checkId}
+                  style={{
+                    cursor: 'pointer',
+                    marginRight: '10px',
+                    border: '1px solid #ddd',
+                  }}
+                ></img>
+              );
+            })}
+          </Box>
         </Grid>
         <Grid item md={7}>
           <Typography component="h1" variant="h4" sx={{ mb: '20px' }}>
@@ -164,7 +170,7 @@ function ProductInfo() {
               {data.quantity} sản phẩm có sẵn
             </span>
           </Box>
-          <div className={styles.btn}>
+          <div className={styles.btn} onClick={handleProduct}>
             <AddShoppingCartIcon /> Thêm vào giỏ hàng
           </div>
         </Grid>

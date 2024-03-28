@@ -41,3 +41,17 @@ export const productCurrent = createSlice({
 });
 
 export const { selectProduct } = productCurrent.actions;
+
+export const cartProduct = createSlice({
+  name: 'cartProduct',
+  initialState: {
+    list: [],
+  },
+  reducers: {
+    addProduct: (state, action) => {
+      state.list.push(action.payload);
+    },
+  },
+});
+
+export const { addProduct } = cartProduct.actions;
