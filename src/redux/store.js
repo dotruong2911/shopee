@@ -4,10 +4,12 @@ import {
   productCurrent,
   listProduct,
   cartProduct,
+  category,
 } from './reducer';
 
 export const store = configureStore({
   reducer: {
+    category: category.reducer,
     userCurrent: userCurrent.reducer,
     productCurrent: productCurrent.reducer,
     listProduct: listProduct.reducer,

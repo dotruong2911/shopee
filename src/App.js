@@ -2,8 +2,7 @@ import SignUp from 'pages/SignUp';
 import './App.scss';
 import SignIn from 'pages/SignIn/SignIn';
 import Home from 'pages/Home/Home';
-import { Link, Route, Routes } from 'react-router-dom';
-import ProductInfo from 'pages/Home/Content/Products/Product/ProductInfo/ProductInfo';
+import { Route, Routes } from 'react-router-dom';
 
 function App() {
   return (

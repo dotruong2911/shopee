@@ -1,5 +1,23 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+export const category = createSlice({
+  name: 'category',
+  initialState: {
+    name: '',
+    search: '',
+  },
+  reducers: {
+    addCategory: (state, action) => {
+      state.name = action.payload;
+    },
+    addSearch: (state, action) => {
+      state.search = action.payload;
+    },
+  },
+});
+
+export const { addCategory, addSearch } = category.actions;
+
 export const listProduct = createSlice({
   name: 'listProduct',
   initialState: {
@@ -46,12 +64,16 @@ export const cartProduct = createSlice({
   name: 'cartProduct',
   initialState: {
     list: [],
+    listDelete: [],
   },
   reducers: {
     addProduct: (state, action) => {
       state.list.push(action.payload);
     },
+    deleteProduct: (state, action) => {
+      state.listDelete.push(action.payload);
+    },
   },
 });
 
-export const { addProduct } = cartProduct.actions;
+export const { addProduct, deleteProduct } = cartProduct.actions;

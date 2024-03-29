@@ -6,7 +6,9 @@ import { Box, Avatar, Stack } from '@mui/material';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import LogOut from './Menu/LogOut';
-import { addUser } from '../../../redux/reducer';
+import { addSearch, addUser } from '../../../redux/reducer';
+import { useState } from 'react';
+import { listCartProducts } from '../../../redux/selector';
 
 function AppBar() {
   const stringToColor = (string) => {
@@ -45,6 +47,15 @@ function AppBar() {
   };
 
   const abc = useSelector((state) => state.userCurrent.name);
+  const count = useSelector(listCartProducts);
+
+  const [search, setSearch] = useState({
+    input: '',
+  });
+
+  const handleSearch = () => {
+    dispatch(addSearch(search.input));
+  };
   return (
     <div
       style={{
@@ -58,6 +69,7 @@ function AppBar() {
         </Link>
         <Box className={styles.search}>
           <input
+            type="text"
             className={styles.inputs}
             placeholder="Tìm kiếm sản phẩm"
             style={{
@@ -66,17 +78,28 @@ function AppBar() {
               height: '100%',
               flex: '1',
             }}
+            name="input"
+            value={search.input}
+            onChange={(e) => {
+              setSearch({
+                ...search,
+                [e.target.name]: e.target.value,
+              });
+            }}
           ></input>
 
-          <Box className={styles.icon}>
+          <Box className={styles.icon} onClick={handleSearch}>
             <SearchIcon />
           </Box>
         </Box>
 
         {abc && (
           <>
-            <Link to="/cart">
-              <ShoppingCartIcon sx={{ color: 'white', fontSize: '35px' }} />
+            <Link to="/cart" style={{ textDecoration: 'none' }}>
+              <Box className={styles.shop}>
+                <ShoppingCartIcon sx={{ color: 'white', fontSize: '35px' }} />
+                <span className={styles.count}>{count.length}</span>
+              </Box>
             </Link>
 
             <LogOut

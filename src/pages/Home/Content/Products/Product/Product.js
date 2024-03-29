@@ -1,24 +1,16 @@
 import { Grid, Paper, Rating, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
 import styles from './Product.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectProduct } from '../../../../../redux/reducer';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { listItems } from '../../../../../redux/selector';
 
 function Product() {
-  const listProduct = useSelector((state) => state.listProduct.list);
-
-  useEffect(() => {
-    setProducts(listProduct);
-  }, [listProduct]);
-
-  const [products, setProducts] = useState([]);
-
+  const products = useSelector(listItems);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleSelect = (e) => {
     dispatch(selectProduct(e.target.parentElement.getAttribute('name')));
-    console.log(e.target.parentElement.getAttribute('name'));
     navigate('/id');
   };
 
@@ -26,15 +18,15 @@ function Product() {
     <Grid container>
       {products.map((data) => {
         return (
-          <Grid item md={2.4}>
+          <Grid item md={2} key={data._id}>
             <Paper
               onClick={handleSelect}
               name={data._id}
               elevation={10}
               sx={{
-                width: '200px',
+                width: '185px',
+                height: '270px',
                 p: '10px',
-                gap: '20px',
                 cursor: 'pointer',
                 mb: '20px',
               }}
@@ -42,7 +34,7 @@ function Product() {
             >
               <img
                 src={data.image}
-                style={{ width: '100%', height: '200px' }}
+                style={{ width: '100%', height: '160px' }}
                 alt="images"
               ></img>
               <Typography
@@ -64,7 +56,12 @@ function Product() {
               <Typography
                 component="span"
                 variant="small"
-                sx={{ textDecoration: 'line-through', mr: '10px', mb: '5px' }}
+                sx={{
+                  textDecoration: 'line-through',
+                  mr: '10px',
+                  mb: '5px',
+                  fontSize: '12px',
+                }}
               >
                 {new Intl.NumberFormat('vi-VN', {
                   style: 'currency',

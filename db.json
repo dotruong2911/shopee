@@ -9,42 +9,10 @@
       }
     },
     {
-      "id": "8012",
+      "id": "ab6a",
       "data": {
         "phone": "0359778981",
-        "name": "do truong",
-        "password": "Test1234!"
-      }
-    },
-    {
-      "id": "ee39",
-      "data": {
-        "phone": "0359778982",
-        "name": "do truong",
-        "password": "Test1234!"
-      }
-    },
-    {
-      "id": "b989",
-      "data": {
-        "phone": "0359778985",
-        "name": "do truong",
-        "password": "Test1234!"
-      }
-    },
-    {
-      "id": "d68c",
-      "data": {
-        "phone": "0359778988",
-        "name": "Đỗ Xuân Trường",
-        "password": "Test1234!"
-      }
-    },
-    {
-      "id": "106e",
-      "data": {
-        "phone": "0359778989",
-        "name": "asd acf",
+        "name": "hue dinh",
         "password": "Test1234!"
       }
     }

@@ -71,17 +71,17 @@ function Form() {
     e.preventDefault();
     checkPhone();
     checkPassword();
-    if (Object.keys(inputError)) {
+    if (Object.keys(inputError).length) {
       setError(inputError);
     }
-    if (!Object.keys(inputError).length) {
+
+    if (Object.keys(inputError).length === 0) {
+      const getNameUser = listUser.find((item) => {
+        return item.data.phone === input.phone;
+      });
+      dispatch(addUser(getNameUser.data.name));
       navigate('/home');
     }
-    const getNameUser = listUser.find((item) => {
-      return (item.phone = input.phone);
-    });
-
-    dispatch(addUser(getNameUser.data.name));
   };
 
   const navigate = useNavigate();

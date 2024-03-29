@@ -1,47 +1,35 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { alpha } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import TableSortLabel from '@mui/material/TableSortLabel';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
-import Checkbox from '@mui/material/Checkbox';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
+import {
+  Box,
+  Paper,
+  Checkbox,
+  IconButton,
+  Tooltip,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+  TableSortLabel,
+  Toolbar,
+  Typography,
+} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import styles from './Cart.module.scss';
+import { listCartProducts } from '../../redux/selector';
+import { deleteProduct } from '../../redux/reducer';
+import { useEffect } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { useState } from 'react';
 
 export default function Cart() {
-  const products = useSelector((state) => state.cartProduct.list);
-  console.log(products);
-
-  function createData(id, image, name, price, quantity) {
-    let totalPrice = price * 3;
-    return {
-      id,
-      image,
-      name,
-      price,
-      quantity,
-      totalPrice,
-    };
-  }
-
-  const rows = [
-    createData(1, products.image, products.name, products.price, 3, 67),
-  ];
-
   function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
       return -1;
@@ -94,6 +82,12 @@ export default function Cart() {
       numeric: true,
       disablePadding: false,
       label: 'Số Tiền',
+    },
+    {
+      id: 'action',
+      numeric: true,
+      disablePadding: false,
+      label: 'Thao Tác',
     },
   ];
 
@@ -161,6 +155,15 @@ export default function Cart() {
     rowCount: PropTypes.number.isRequired,
   };
 
+  const products = useSelector(listCartProducts);
+  useEffect(() => {
+    console.log('abc');
+  }, [products]);
+
+  const dispatch = useDispatch();
+
+  const abc = useSelector((state) => state.cartProduct.listDelete);
+
   function EnhancedTableToolbar(props) {
     const { numSelected } = props;
 
@@ -169,53 +172,27 @@ export default function Cart() {
         sx={{
           pl: { sm: 2 },
           pr: { xs: 1, sm: 1 },
-          ...(numSelected > 0 && {
-            bgcolor: (theme) =>
-              alpha(
-                theme.palette.primary.main,
-                theme.palette.action.activatedOpacity
-              ),
-          }),
         }}
       >
-        {numSelected > 0 ? (
-          <Typography
-            sx={{ flex: '1 1 100%', fontSize: '20px', m: '25px' }}
-            color="inherit"
-            variant="subtitle1"
-            component="div"
-          >
-            {numSelected} selected
-          </Typography>
-        ) : (
-          <Typography
-            sx={{
-              flex: '1 1 100%',
-              fontSize: '30px',
-              m: '20px',
-              color: 'var(--orange)',
-            }}
-            variant="h6"
-            id="tableTitle"
-            component="div"
-          >
-            Giỏ hàng
-          </Typography>
-        )}
+        <Typography
+          sx={{
+            flex: '1 1 100%',
+            fontSize: '30px',
+            m: '15px',
+            color: 'var(--orange)',
+          }}
+          variant="h6"
+          id="tableTitle"
+          component="div"
+        >
+          Giỏ hàng
+        </Typography>
 
-        {numSelected > 0 ? (
-          <Tooltip title="Delete">
-            <IconButton>
-              <DeleteIcon />
-            </IconButton>
-          </Tooltip>
-        ) : (
-          <Tooltip title="Filter list">
-            <IconButton>
-              <FilterListIcon />
-            </IconButton>
-          </Tooltip>
-        )}
+        <Tooltip title="Filter list">
+          <IconButton>
+            <FilterListIcon />
+          </IconButton>
+        </Tooltip>
       </Toolbar>
     );
   }
@@ -224,11 +201,35 @@ export default function Cart() {
     numSelected: PropTypes.number.isRequired,
   };
 
+  function createData(id, image, name, price, quantity, totalPrice) {
+    return {
+      id,
+      image,
+      name,
+      price,
+      quantity,
+      totalPrice,
+    };
+  }
+
+  const rows = products.map((item) => {
+    return createData(
+      item._id,
+      item.image,
+      item.name,
+      item.price,
+      item.quantity,
+      item.totalPrice
+    );
+  });
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('price');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(4);
+
+  const [totalProduct, setTotalProduct] = React.useState(0);
+  const [totalPrices, setTotalPrices] = React.useState(0);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -236,19 +237,35 @@ export default function Cart() {
     setOrderBy(property);
   };
 
+  let newSelecteds = [];
+
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelected = rows.map((n) => n.id);
-      setSelected(newSelected);
-      return;
+      newSelecteds = rows.map((n) => n.id);
+      setSelected(newSelecteds);
+    } else {
+      setSelected([]);
     }
-    setSelected([]);
+    let count = 0;
+    let price = 0;
+    for (let i of newSelecteds) {
+      products.forEach((item) => {
+        if (item._id === i) {
+          count += item.quantity;
+          price += item.totalPrice;
+        }
+      });
+    }
+    setTotalProduct(count);
+    setTotalPrices(price);
   };
+  function handleDelete(e) {
+    dispatch(deleteProduct(e.target.id));
+  }
 
   const handleClick = (event, id) => {
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];
-
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, id);
     } else if (selectedIndex === 0) {
@@ -262,6 +279,18 @@ export default function Cart() {
       );
     }
     setSelected(newSelected);
+    let count = 0;
+    let price = 0;
+    for (let i of newSelected) {
+      products.forEach((item) => {
+        if (item._id === i) {
+          count += item.quantity;
+          price += item.totalPrice;
+        }
+      });
+    }
+    setTotalProduct(count);
+    setTotalPrices(price);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -272,26 +301,16 @@ export default function Cart() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
   const isSelected = (id) => selected.indexOf(id) !== -1;
 
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
-  const visibleRows = React.useMemo(
-    () =>
-      stableSort(rows, getComparator(order, orderBy)).slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage
-      ),
-    [order, orderBy, page, rowsPerPage]
-  );
-
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />
-        <TableContainer>
+        <TableContainer sx={{ height: '470px' }}>
           <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
             <EnhancedTableHead
               numSelected={selected.length}
@@ -301,15 +320,15 @@ export default function Cart() {
               onRequestSort={handleRequestSort}
               rowCount={rows.length}
             />
+
             <TableBody>
-              {visibleRows.map((row, index) => {
-                const isItemSelected = isSelected(row.id);
+              {products.map((row, index) => {
+                const isItemSelected = isSelected(row._id);
                 const labelId = `enhanced-table-checkbox-${index}`;
 
                 return (
                   <TableRow
                     hover
-                    onClick={(event) => handleClick(event, row.id)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
@@ -319,6 +338,7 @@ export default function Cart() {
                   >
                     <TableCell padding="checkbox">
                       <Checkbox
+                        onClick={(event) => handleClick(event, row._id)}
                         color="primary"
                         checked={isItemSelected}
                         inputProps={{
@@ -326,11 +346,7 @@ export default function Cart() {
                         }}
                       />
                     </TableCell>
-                    <TableCell
-                      id={labelId}
-                      padding="5px"
-                      sx={{ width: '500px' }}
-                    >
+                    <TableCell id={labelId} sx={{ width: '500px' }}>
                       <Typography
                         sx={{ display: 'flex', alignItems: 'center' }}
                       >
@@ -363,6 +379,11 @@ export default function Cart() {
                         currency: 'VND',
                       }).format(row.totalPrice)}
                     </TableCell>
+                    <TableCell align="right" sx={{ fontSize: '20px' }}>
+                      <IconButton id={row._id} onClick={handleDelete}>
+                        <DeleteIcon sx={{ pointerEvents: 'none' }} />
+                      </IconButton>
+                    </TableCell>
                   </TableRow>
                 );
               })}
@@ -374,15 +395,27 @@ export default function Cart() {
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
+
+        <Box className={styles.box}>
+          <Typography
+            sx={{ ml: '30px', color: 'var(--orange)', fontSize: '20px' }}
+          >
+            Tổng thanh toán ({totalProduct} sản phẩm) : {'  '}
+            {new Intl.NumberFormat('vn-VN', {
+              style: 'currency',
+              currency: 'VND',
+            }).format(totalPrices)}
+          </Typography>
+          <TablePagination
+            rowsPerPageOptions={[4, 8, 12]}
+            component="div"
+            count={rows.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </Box>
       </Paper>
     </Box>
   );

@@ -1,4 +1,6 @@
 .paper {
+  outline: none;
+  box-sizing: border-box;
   &:hover {
     border: 1px solid red;
   }

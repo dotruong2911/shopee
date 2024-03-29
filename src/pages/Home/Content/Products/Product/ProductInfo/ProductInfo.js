@@ -6,6 +6,8 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import styles from './ProductInfo.module.scss';
 import { useSelector, useDispatch } from 'react-redux';
 import { addProduct } from '../../../../../../redux/reducer';
+import { toast, ToastContainer } from 'react-toastify';
+import { v4 as uuidv4 } from 'uuid';
 
 function ProductInfo() {
   const idProduct = useSelector((state) => state.productCurrent.id);
@@ -14,7 +16,6 @@ function ProductInfo() {
   const productCurrent = listProduct.find((item) => {
     return item._id === idProduct;
   });
-  console.log(productCurrent);
 
   useEffect(() => {
     setData(productCurrent);
@@ -44,10 +45,29 @@ function ProductInfo() {
     }
   };
 
+  const notify = () => toast('Đã thêm sản phẩm vào giỏ hàng');
+  const notify1 = () => toast('Chọn số lượng sản phẩm');
   const dispatch = useDispatch();
   const handleProduct = () => {
-    dispatch(addProduct(productCurrent));
+    let totalPrice = productCurrent.price * count;
+    if (count) {
+      dispatch(
+        addProduct({
+          _id: uuidv4(),
+          name: productCurrent.name,
+          image: productCurrent.image,
+          price: productCurrent.price,
+          quantity: count,
+          totalPrice,
+        })
+      );
+      notify();
+    } else {
+      notify1();
+    }
   };
+
+  const userCurrent = useSelector((state) => state.userCurrent.name);
 
   return (
     <Paper sx={{ p: '20px 10px' }}>
@@ -170,9 +190,12 @@ function ProductInfo() {
               {data.quantity} sản phẩm có sẵn
             </span>
           </Box>
-          <div className={styles.btn} onClick={handleProduct}>
-            <AddShoppingCartIcon /> Thêm vào giỏ hàng
-          </div>
+          {userCurrent && (
+            <div className={styles.btn} onClick={handleProduct}>
+              <AddShoppingCartIcon /> Thêm vào giỏ hàng
+              <ToastContainer />
+            </div>
+          )}
         </Grid>
       </Grid>
     </Paper>
