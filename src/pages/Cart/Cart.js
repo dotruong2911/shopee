@@ -1,6 +1,5 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { alpha } from '@mui/material/styles';
 import {
   Box,
   Paper,
@@ -12,52 +11,20 @@ import {
   TableCell,
   TableContainer,
   TableHead,
-  TablePagination,
   TableRow,
-  TableSortLabel,
   Toolbar,
   Typography,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
-import { visuallyHidden } from '@mui/utils';
 import { useSelector, useDispatch } from 'react-redux';
 import styles from './Cart.module.scss';
 import { listCartProducts } from '../../redux/selector';
 import { deleteProduct } from '../../redux/reducer';
-import { useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import { useState } from 'react';
+import { useEffect } from 'react';
 
 export default function Cart() {
-  function descendingComparator(a, b, orderBy) {
-    if (b[orderBy] < a[orderBy]) {
-      return -1;
-    }
-    if (b[orderBy] > a[orderBy]) {
-      return 1;
-    }
-    return 0;
-  }
-
-  function getComparator(order, orderBy) {
-    return order === 'desc'
-      ? (a, b) => descendingComparator(a, b, orderBy)
-      : (a, b) => -descendingComparator(a, b, orderBy);
-  }
-
-  function stableSort(array, comparator) {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
-      const order = comparator(a[0], b[0]);
-      if (order !== 0) {
-        return order;
-      }
-      return a[1] - b[1];
-    });
-    return stabilizedThis.map((el) => el[0]);
-  }
-
   const headCells = [
     {
       id: 'name',
@@ -92,17 +59,7 @@ export default function Cart() {
   ];
 
   function EnhancedTableHead(props) {
-    const {
-      onSelectAllClick,
-      order,
-      orderBy,
-      numSelected,
-      rowCount,
-      onRequestSort,
-    } = props;
-    const createSortHandler = (property) => (event) => {
-      onRequestSort(event, property);
-    };
+    const { onSelectAllClick, numSelected, rowCount, headCells } = props;
 
     return (
       <TableHead>
@@ -122,23 +79,8 @@ export default function Cart() {
             <TableCell
               key={headCell.id}
               align={headCell.numeric ? 'right' : 'left'}
-              padding={headCell.disablePadding ? 'none' : 'normal'}
-              sortDirection={orderBy === headCell.id ? order : false}
             >
-              <TableSortLabel
-                active={orderBy === headCell.id}
-                direction={orderBy === headCell.id ? order : 'asc'}
-                onClick={createSortHandler(headCell.id)}
-              >
-                {headCell.label}
-                {orderBy === headCell.id ? (
-                  <Box component="span" sx={visuallyHidden}>
-                    {order === 'desc'
-                      ? 'sorted descending'
-                      : 'sorted ascending'}
-                  </Box>
-                ) : null}
-              </TableSortLabel>
+              {headCell.label}
             </TableCell>
           ))}
         </TableRow>
@@ -156,17 +98,20 @@ export default function Cart() {
   };
 
   const products = useSelector(listCartProducts);
+
   useEffect(() => {
-    console.log('abc');
+    setAbc(products);
   }, [products]);
+
+  const [abc, setAbc] = useState([]);
+
+  const arrId = products.map((item) => {
+    return item._id;
+  });
 
   const dispatch = useDispatch();
 
-  const abc = useSelector((state) => state.cartProduct.listDelete);
-
   function EnhancedTableToolbar(props) {
-    const { numSelected } = props;
-
     return (
       <Toolbar
         sx={{
@@ -201,128 +146,78 @@ export default function Cart() {
     numSelected: PropTypes.number.isRequired,
   };
 
-  function createData(id, image, name, price, quantity, totalPrice) {
-    return {
-      id,
-      image,
-      name,
-      price,
-      quantity,
-      totalPrice,
-    };
-  }
-
-  const rows = products.map((item) => {
-    return createData(
-      item._id,
-      item.image,
-      item.name,
-      item.price,
-      item.quantity,
-      item.totalPrice
-    );
-  });
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('price');
   const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(4);
-
   const [totalProduct, setTotalProduct] = React.useState(0);
   const [totalPrices, setTotalPrices] = React.useState(0);
 
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
-  };
-
   let newSelecteds = [];
+
+  let count = 0;
+  let price = 0;
+  const abcd = (x) => {
+    for (let i of x) {
+      products.forEach((item) => {
+        if (item._id === i) {
+          count += item.quantity;
+          price += item.totalPrice;
+        }
+      });
+    }
+    setTotalProduct(count);
+    setTotalPrices(price);
+  };
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      newSelecteds = rows.map((n) => n.id);
+      newSelecteds = products.map((n) => n._id);
       setSelected(newSelecteds);
     } else {
       setSelected([]);
     }
-    let count = 0;
-    let price = 0;
-    for (let i of newSelecteds) {
-      products.forEach((item) => {
-        if (item._id === i) {
-          count += item.quantity;
-          price += item.totalPrice;
-        }
-      });
-    }
-    setTotalProduct(count);
-    setTotalPrices(price);
+    abcd(newSelecteds);
   };
-  function handleDelete(e) {
-    dispatch(deleteProduct(e.target.id));
-  }
 
   const handleClick = (event, id) => {
     const selectedIndex = selected.indexOf(id);
-    let newSelected = [];
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
+      newSelecteds = newSelecteds.concat(selected, id);
     } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
+      newSelecteds = newSelecteds.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
+      newSelecteds = newSelecteds.concat(selected.slice(0, -1));
     } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
+      newSelecteds = newSelecteds.concat(
         selected.slice(0, selectedIndex),
         selected.slice(selectedIndex + 1)
       );
     }
-    setSelected(newSelected);
-    let count = 0;
-    let price = 0;
-    for (let i of newSelected) {
-      products.forEach((item) => {
-        if (item._id === i) {
-          count += item.quantity;
-          price += item.totalPrice;
-        }
-      });
-    }
-    setTotalProduct(count);
-    setTotalPrices(price);
+    setSelected(newSelecteds);
+    abcd(newSelecteds);
   };
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  function handleDelete(e) {
+    dispatch(deleteProduct(e.target.id));
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+    // handleClick();
+  }
+
   const isSelected = (id) => selected.indexOf(id) !== -1;
-
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
   return (
     <Box sx={{ width: '100%' }}>
-      <Paper sx={{ width: '100%', mb: 2 }}>
+      <Paper sx={{ width: '100%' }}>
         <EnhancedTableToolbar numSelected={selected.length} />
-        <TableContainer sx={{ height: '470px' }}>
+        <TableContainer sx={{ height: '473px' }}>
           <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
             <EnhancedTableHead
               numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
-              onRequestSort={handleRequestSort}
-              rowCount={rows.length}
+              rowCount={products.length}
+              headCells={headCells}
             />
 
             <TableBody>
-              {products.map((row, index) => {
+              {abc.map((row, index) => {
                 const isItemSelected = isSelected(row._id);
                 const labelId = `enhanced-table-checkbox-${index}`;
 
@@ -334,7 +229,6 @@ export default function Cart() {
                     tabIndex={-1}
                     key={row.id}
                     selected={isItemSelected}
-                    sx={{ cursor: 'pointer' }}
                   >
                     <TableCell padding="checkbox">
                       <Checkbox
@@ -346,7 +240,7 @@ export default function Cart() {
                         }}
                       />
                     </TableCell>
-                    <TableCell id={labelId} sx={{ width: '500px' }}>
+                    <TableCell id={labelId} sx={{ width: '500px', p: '5px' }}>
                       <Typography
                         sx={{ display: 'flex', alignItems: 'center' }}
                       >
@@ -355,24 +249,24 @@ export default function Cart() {
                           alt="name"
                           style={{ width: '70px', marginRight: '10px' }}
                         />
-                        <span>{row.name}</span>
+                        <span style={{ fontSize: '15px' }}>{row.name}</span>
                       </Typography>
                     </TableCell>
                     <TableCell
                       align="right"
-                      sx={{ fontSize: '20px', color: 'red' }}
+                      sx={{ fontSize: '15px', color: 'red' }}
                     >
                       {new Intl.NumberFormat('vn-VN', {
                         style: 'currency',
                         currency: 'VND',
                       }).format(row.price)}
                     </TableCell>
-                    <TableCell align="right" sx={{ fontSize: '20px' }}>
+                    <TableCell align="right" sx={{ fontSize: '15px' }}>
                       {row.quantity}
                     </TableCell>
                     <TableCell
                       align="right"
-                      sx={{ fontSize: '20px', color: 'red' }}
+                      sx={{ fontSize: '15px', color: 'red' }}
                     >
                       {new Intl.NumberFormat('vn-VN', {
                         style: 'currency',
@@ -387,18 +281,36 @@ export default function Cart() {
                   </TableRow>
                 );
               })}
-              {emptyRows > 0 && (
-                <TableRow>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
             </TableBody>
           </Table>
         </TableContainer>
 
         <Box className={styles.box}>
+          <Typography className={styles.footer}>
+            <EnhancedTableHead
+              numSelected={selected.length}
+              onSelectAllClick={handleSelectAllClick}
+              rowCount={products.length}
+              headCells={[]}
+            />
+            Chọn tất cả ({totalProduct})
+            <span
+              aria-disabled="true"
+              id={arrId}
+              style={{ cursor: 'pointer' }}
+              onClick={handleDelete}
+              // if (selected.length) dispatch(deleteAllProduct());}
+            >
+              Xóa
+            </span>
+          </Typography>
+
           <Typography
-            sx={{ ml: '30px', color: 'var(--orange)', fontSize: '20px' }}
+            sx={{
+              mr: '50px',
+              color: 'var(--orange)',
+              fontSize: '18px',
+            }}
           >
             Tổng thanh toán ({totalProduct} sản phẩm) : {'  '}
             {new Intl.NumberFormat('vn-VN', {
@@ -406,15 +318,6 @@ export default function Cart() {
               currency: 'VND',
             }).format(totalPrices)}
           </Typography>
-          <TablePagination
-            rowsPerPageOptions={[4, 8, 12]}
-            component="div"
-            count={rows.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
         </Box>
       </Paper>
     </Box>

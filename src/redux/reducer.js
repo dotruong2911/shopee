@@ -71,9 +71,17 @@ export const cartProduct = createSlice({
       state.list.push(action.payload);
     },
     deleteProduct: (state, action) => {
-      state.listDelete.push(action.payload);
+      const arr = action.payload.split(',');
+      for (let i of arr) {
+        state.listDelete.push(i);
+      }
+      // return state.listDelete;
+    },
+    deleteAllProduct: (state) => {
+      state.list = [];
     },
   },
 });
 
-export const { addProduct, deleteProduct } = cartProduct.actions;
+export const { addProduct, deleteProduct, deleteAllProduct } =
+  cartProduct.actions;

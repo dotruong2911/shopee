@@ -1,5 +1,13 @@
 .box {
   display: flex;
   align-items: center;
+  background-color: #eee;
+  height: 65px;
   justify-content: space-between;
+
+  .footer {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
 }
