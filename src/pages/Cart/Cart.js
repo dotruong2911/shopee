@@ -23,6 +23,9 @@ import { listCartProducts } from '../../redux/selector';
 import { deleteProduct } from '../../redux/reducer';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
+import AlertDialog from './Dialog/Dialog';
 
 export default function Cart() {
   const headCells = [
@@ -147,62 +150,111 @@ export default function Cart() {
   };
 
   const [selected, setSelected] = React.useState([]);
-  const [totalProduct, setTotalProduct] = React.useState(0);
+  const [totalProduct, setTotalProduct] = React.useState([]);
+  const [totalQuantity, setTotalQuantity] = React.useState(0);
+  const [count, setCount] = React.useState([]);
   const [totalPrices, setTotalPrices] = React.useState(0);
 
   let newSelecteds = [];
-
-  let count = 0;
-  let price = 0;
-  const abcd = (x) => {
-    for (let i of x) {
-      products.forEach((item) => {
-        if (item._id === i) {
-          count += item.quantity;
-          price += item.totalPrice;
-        }
-      });
-    }
-    setTotalProduct(count);
-    setTotalPrices(price);
-  };
+  let newQuantity = [];
+  let newPrice = [];
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
       newSelecteds = products.map((n) => n._id);
+      newQuantity = products.map((n) => n.quantity);
+      newPrice = products.map((n) => n.totalPrice);
       setSelected(newSelecteds);
+      setTotalProduct(newQuantity);
+      setCount(newPrice);
+      let x = 0;
+      newQuantity.length
+        ? (x = newQuantity.reduce((a, b) => {
+            return a + b;
+          }, 0))
+        : (x = 0);
+      setTotalQuantity(x);
+      let i = 0;
+      newPrice.length
+        ? (i = newPrice.reduce((a, b) => {
+            return a + b;
+          }, 0))
+        : (x = 0);
+      setTotalPrices(i);
     } else {
       setSelected([]);
+      setTotalQuantity(0);
+      setTotalPrices(0);
     }
-    abcd(newSelecteds);
   };
-
-  const handleClick = (event, id) => {
+  const handleClick = (event, id, quantity, price) => {
     const selectedIndex = selected.indexOf(id);
+    const selectedQuantity = selected.indexOf(id);
+    const selectedPrice = selected.indexOf(id);
     if (selectedIndex === -1) {
       newSelecteds = newSelecteds.concat(selected, id);
+      newQuantity = newQuantity.concat(totalProduct, quantity);
+      newPrice = newPrice.concat(count, price);
     } else if (selectedIndex === 0) {
       newSelecteds = newSelecteds.concat(selected.slice(1));
+      newQuantity = newQuantity.concat(totalProduct.slice(1));
+      newPrice = newPrice.concat(count.slice(1));
     } else if (selectedIndex === selected.length - 1) {
       newSelecteds = newSelecteds.concat(selected.slice(0, -1));
+      newQuantity = newQuantity.concat(totalProduct.slice(0, -1));
+      newPrice = newPrice.concat(count.slice(0, -1));
     } else if (selectedIndex > 0) {
       newSelecteds = newSelecteds.concat(
         selected.slice(0, selectedIndex),
         selected.slice(selectedIndex + 1)
       );
+      newQuantity = newQuantity.concat(
+        totalProduct.slice(0, selectedQuantity),
+        totalProduct.slice(selectedQuantity + 1)
+      );
+      newPrice = newPrice.concat(
+        count.slice(0, selectedPrice),
+        count.slice(selectedPrice + 1)
+      );
     }
     setSelected(newSelecteds);
-    abcd(newSelecteds);
+    setTotalProduct(newQuantity);
+    setCount(newPrice);
+    let x = 0;
+    newQuantity.length
+      ? (x = newQuantity.reduce((a, b) => {
+          return a + b;
+        }, 0))
+      : (x = 0);
+    setTotalQuantity(x);
+    let i = 0;
+    newPrice.length
+      ? (i = newPrice.reduce((a, b) => {
+          return a + b;
+        }, 0))
+      : (x = 0);
+    setTotalPrices(i);
   };
 
-  function handleDelete(e) {
+  function handleDelete(e, id, quantity, price) {
     dispatch(deleteProduct(e.target.id));
+    handleClick(e, id, quantity, price);
+  }
 
-    // handleClick();
+  function handleDeleteAll(e) {
+    dispatch(deleteProduct(arrId.join(',')));
   }
 
   const isSelected = (id) => selected.indexOf(id) !== -1;
 
+  const userPhone = useSelector((state) => state.userCurrent.phone);
+
+  const handleCart = () => {
+    axios.put(`http://localhost:3000/shop/${userPhone}`, { data: products });
+    notify();
+  };
+
+  const notify = () => toast('Lưu giỏ hàng thành công!');
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%' }}>
@@ -232,7 +284,14 @@ export default function Cart() {
                   >
                     <TableCell padding="checkbox">
                       <Checkbox
-                        onClick={(event) => handleClick(event, row._id)}
+                        onClick={(event) =>
+                          handleClick(
+                            event,
+                            row._id,
+                            row.quantity,
+                            row.totalPrice
+                          )
+                        }
                         color="primary"
                         checked={isItemSelected}
                         inputProps={{
@@ -274,7 +333,12 @@ export default function Cart() {
                       }).format(row.totalPrice)}
                     </TableCell>
                     <TableCell align="right" sx={{ fontSize: '20px' }}>
-                      <IconButton id={row._id} onClick={handleDelete}>
+                      <IconButton
+                        id={row._id}
+                        onClick={(e) =>
+                          handleDelete(e, row._id, row.quantity, row.totalPrice)
+                        }
+                      >
                         <DeleteIcon sx={{ pointerEvents: 'none' }} />
                       </IconButton>
                     </TableCell>
@@ -293,15 +357,21 @@ export default function Cart() {
               rowCount={products.length}
               headCells={[]}
             />
-            Chọn tất cả ({totalProduct})
+            Chọn tất cả ({totalQuantity})
             <span
-              aria-disabled="true"
+              // aria-disabled="true"
               id={arrId}
               style={{ cursor: 'pointer' }}
-              onClick={handleDelete}
-              // if (selected.length) dispatch(deleteAllProduct());}
             >
-              Xóa
+              <AlertDialog name="xoá" id={arrId} deletes={handleDeleteAll} />
+            </span>
+            <span
+              aria-disabled="true"
+              style={{ cursor: 'pointer' }}
+              onClick={handleCart}
+            >
+              Lưu giỏ hàng
+              <ToastContainer />
             </span>
           </Typography>
 
@@ -312,11 +382,11 @@ export default function Cart() {
               fontSize: '18px',
             }}
           >
-            Tổng thanh toán ({totalProduct} sản phẩm) : {'  '}
+            Tổng thanh toán ({totalQuantity || 0} sản phẩm) : {'  '}
             {new Intl.NumberFormat('vn-VN', {
               style: 'currency',
               currency: 'VND',
-            }).format(totalPrices)}
+            }).format(totalPrices || 0)}
           </Typography>
         </Box>
       </Paper>

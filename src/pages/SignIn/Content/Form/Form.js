@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { addUser } from '../../../../redux/reducer';
+import { addUser, addPhone } from '../../../../redux/reducer';
 
 function Form() {
   const dispatch = useDispatch();
@@ -80,6 +80,7 @@ function Form() {
         return item.data.phone === input.phone;
       });
       dispatch(addUser(getNameUser.data.name));
+      dispatch(addPhone(getNameUser.data.phone));
       navigate('/home');
     }
   };

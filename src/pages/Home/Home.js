@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { addList } from '../../redux/reducer';
 import ProductInfo from './Content/Products/Product/ProductInfo/ProductInfo';
-import { Routes, Route, Link, NavLink, Outlet } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Cart from 'pages/Cart/Cart';
 import LinearProgress from '@mui/material/LinearProgress';
 
@@ -19,7 +19,9 @@ function Home() {
         const response = await axios.get(
           'https://api-ecom.duthanhduoc.com/products?page=1&limit=24'
         );
+
         await dispatch(addList(response.data.data.products));
+        console.log(response.data.data.products);
         setLd(false);
       } catch (error) {
         console.error(error);

@@ -81,7 +81,11 @@ function Form() {
 
   const post = (data) => {
     axios.post('http://localhost:3000/user', {
+      id: input.phone,
       data,
+    });
+    axios.post('http://localhost:3000/shop', {
+      id: input.phone,
     });
   };
 
@@ -110,6 +114,7 @@ function Form() {
       Object.keys(inputError).length === 0
     ) {
       post(input);
+
       setInput({
         phone: '',
         name: '',

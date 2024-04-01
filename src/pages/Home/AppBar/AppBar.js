@@ -6,11 +6,29 @@ import { Box, Avatar, Stack } from '@mui/material';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import LogOut from './Menu/LogOut';
-import { addSearch, addUser } from '../../../redux/reducer';
-import { useState } from 'react';
+import {
+  addSearch,
+  addUser,
+  userProduct,
+  deleteAllProduct,
+} from '../../../redux/reducer';
+import { useEffect, useState } from 'react';
 import { listCartProducts } from '../../../redux/selector';
+import axios from 'axios';
 
 function AppBar() {
+  const userPhone = useSelector((state) => state.userCurrent.phone);
+
+  useEffect(() => {
+    async function getUser() {
+      if (userPhone) {
+        const res = await axios.get(`http://localhost:3000/shop/${userPhone}`);
+        dispatch(userProduct(res.data.data));
+      }
+    }
+    getUser();
+  }, []);
+
   const stringToColor = (string) => {
     let hash = 0;
     let i;
@@ -42,6 +60,7 @@ function AppBar() {
   const logOut = () => {
     setTimeout(() => {
       dispatch(addUser(''));
+      dispatch(deleteAllProduct());
       navigate('/');
     }, 1000);
   };
@@ -85,6 +104,7 @@ function AppBar() {
                 ...search,
                 [e.target.name]: e.target.value,
               });
+              // dispatch(addSearch(e.target.value));
             }}
           ></input>
 

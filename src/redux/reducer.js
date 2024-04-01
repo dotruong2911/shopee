@@ -1,3 +1,4 @@
+import { SatelliteAlt } from '@mui/icons-material';
 import { createSlice } from '@reduxjs/toolkit';
 
 export const category = createSlice({
@@ -36,15 +37,19 @@ export const userCurrent = createSlice({
   name: 'userCurrent',
   initialState: {
     name: '',
+    phone: '',
   },
   reducers: {
     addUser: (state, action) => {
       state.name = action.payload;
     },
+    addPhone: (state, action) => {
+      state.phone = action.payload;
+    },
   },
 });
 
-export const { addUser } = userCurrent.actions;
+export const { addUser, addPhone } = userCurrent.actions;
 
 export const productCurrent = createSlice({
   name: 'productCurrent',
@@ -67,6 +72,9 @@ export const cartProduct = createSlice({
     listDelete: [],
   },
   reducers: {
+    userProduct: (state, action) => {
+      state.list = action.payload;
+    },
     addProduct: (state, action) => {
       state.list.push(action.payload);
     },
@@ -75,7 +83,6 @@ export const cartProduct = createSlice({
       for (let i of arr) {
         state.listDelete.push(i);
       }
-      // return state.listDelete;
     },
     deleteAllProduct: (state) => {
       state.list = [];
@@ -83,5 +90,5 @@ export const cartProduct = createSlice({
   },
 });
 
-export const { addProduct, deleteProduct, deleteAllProduct } =
+export const { userProduct, addProduct, deleteProduct, deleteAllProduct } =
   cartProduct.actions;

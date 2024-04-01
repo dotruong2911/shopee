@@ -1,16 +1,16 @@
 import { createSelector } from '@reduxjs/toolkit';
 
 export const selectCatagory = (state) => state.category.name;
-export const searchInput = (state) => state.category.search;
 export const listProduct = (state) => state.listProduct.list;
+export const searchInput = (state) => state.category.search;
 
 export const listItems = createSelector(
   selectCatagory,
   listProduct,
   searchInput,
   (name, list, search) => {
+    let regex = new RegExp(search, 'i');
     return list.filter((item) => {
-      let regex = new RegExp(search);
       return item.category.name.includes(name) && regex.test(item.name);
     });
   }

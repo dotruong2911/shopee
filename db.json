@@ -1,20 +1,96 @@
 {
   "user": [
     {
-      "id": "7318",
+      "id": "0359778981",
       "data": {
-        "phone": "0359778980",
+        "phone": "0359778981",
         "name": "do truong",
         "password": "Test1234!"
       }
     },
     {
-      "id": "ab6a",
+      "id": "0359778980",
       "data": {
-        "phone": "0359778981",
-        "name": "hue dinh",
+        "phone": "0359778980",
+        "name": "truong do",
         "password": "Test1234!"
       }
+    }
+  ],
+  "shop": [
+    {
+      "data": [
+        {
+          "_id": "1c13f468-763f-480a-b143-0b4d85ae1b3b",
+          "name": "Điện thoại OPPO A12 (3GB/32GB) - Hàng chính hãng",
+          "image": "https://api-ecom.duthanhduoc.com/images/aa374023-7a5b-46ea-aca3-dad1b29fb015.jpg",
+          "price": 2590000,
+          "quantity": 1,
+          "totalPrice": 2590000
+        },
+        {
+          "_id": "33266843-621d-4baa-b539-a6ed41c4244a",
+          "name": "Điện thoại OPPO A12 (3GB/32GB) - Hàng chính hãng",
+          "image": "https://api-ecom.duthanhduoc.com/images/aa374023-7a5b-46ea-aca3-dad1b29fb015.jpg",
+          "price": 2590000,
+          "quantity": 1,
+          "totalPrice": 2590000
+        },
+        {
+          "_id": "c9934c4f-0427-4442-8552-fff4b345a56b",
+          "name": "Điện thoại OPPO A12 (3GB/32GB) - Hàng chính hãng",
+          "image": "https://api-ecom.duthanhduoc.com/images/aa374023-7a5b-46ea-aca3-dad1b29fb015.jpg",
+          "price": 2590000,
+          "quantity": 2,
+          "totalPrice": 5180000
+        },
+        {
+          "_id": "7cc89f1d-bd3d-4997-825e-7d0cd1f14d64",
+          "name": "Điện thoại OPPO A12 (3GB/32GB) - Hàng chính hãng",
+          "image": "https://api-ecom.duthanhduoc.com/images/aa374023-7a5b-46ea-aca3-dad1b29fb015.jpg",
+          "price": 2590000,
+          "quantity": 1,
+          "totalPrice": 2590000
+        },
+        {
+          "_id": "f11738c0-74d4-4446-83c7-c5fdc75f833f",
+          "name": "Điện thoại OPPO A12 (3GB/32GB) - Hàng chính hãng",
+          "image": "https://api-ecom.duthanhduoc.com/images/aa374023-7a5b-46ea-aca3-dad1b29fb015.jpg",
+          "price": 2590000,
+          "quantity": 1,
+          "totalPrice": 2590000
+        },
+        {
+          "_id": "1c6ec10f-1706-4d5b-a174-29f9ff37fa24",
+          "name": "Điện thoại OPPO A12 (3GB/32GB) - Hàng chính hãng",
+          "image": "https://api-ecom.duthanhduoc.com/images/aa374023-7a5b-46ea-aca3-dad1b29fb015.jpg",
+          "price": 2590000,
+          "quantity": 1,
+          "totalPrice": 2590000
+        }
+      ],
+      "id": "0359778981"
+    },
+    {
+      "data": [
+        {
+          "_id": "e6e5903b-1180-42ab-8909-773aa3c4007d",
+          "name": "Điện thoại OPPO A12 (3GB/32GB) - Hàng chính hãng",
+          "image": "https://api-ecom.duthanhduoc.com/images/aa374023-7a5b-46ea-aca3-dad1b29fb015.jpg",
+          "price": 2590000,
+          "quantity": 1,
+          "totalPrice": 2590000
+        },
+        {
+          "_id": "7ff6377a-4924-4e20-a8fe-de9f793c3180",
+          "name": "Đồng Hồ Nam WWOOR 8826 Máy Nhật Dây Thép Mành Cao Cấp - Nhiều Màu",
+          "image": "https://api-ecom.duthanhduoc.com/images/1881b221-e9df-4b91-8d13-9d46c995a5d6.jpg",
+          "price": 244550,
+          "quantity": 1,
+          "totalPrice": 244550
+        }
+      ],
+      "id": "0359778980"
     }
   ]
 }
