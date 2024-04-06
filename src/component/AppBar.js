@@ -2,10 +2,10 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { image } from 'assets/image';
-import styles from './AppBarr.module.scss';
+import styles from './AppBar.module.scss';
 import { Link } from 'react-router-dom';
 
-export default function AppBarr() {
+export default function AppBarr({ name }) {
   return (
     <Box className={styles.container}>
       <div className={styles.logo}>
@@ -21,7 +21,7 @@ export default function AppBarr() {
           />
         </Link>
         <Typography variant="h6" component="p">
-          Đăng ký
+          {name}
         </Typography>
       </div>
       <Typography

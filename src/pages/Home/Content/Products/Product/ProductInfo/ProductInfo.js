@@ -10,6 +10,8 @@ import { toast, ToastContainer } from 'react-toastify';
 import { v4 as uuidv4 } from 'uuid';
 
 function ProductInfo() {
+  const dispatch = useDispatch();
+  const userCurrent = useSelector((state) => state.userCurrent.name);
   const idProduct = useSelector((state) => state.productCurrent.id);
   const listProduct = useSelector((state) => state.listProduct.list);
 
@@ -47,7 +49,7 @@ function ProductInfo() {
 
   const notify = () => toast('Đã thêm sản phẩm vào giỏ hàng');
   const notify1 = () => toast('Chọn số lượng sản phẩm');
-  const dispatch = useDispatch();
+
   const handleProduct = () => {
     let totalPrice = productCurrent.price * count;
     if (count) {
@@ -66,8 +68,6 @@ function ProductInfo() {
       notify1();
     }
   };
-
-  const userCurrent = useSelector((state) => state.userCurrent.name);
 
   return (
     <Paper sx={{ p: '20px 10px' }}>

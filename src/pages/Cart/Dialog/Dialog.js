@@ -33,11 +33,7 @@ export default function AlertDialog({ name, deletes }) {
         <DialogTitle id="alert-dialog-title" sx={{ color: 'var(--orange)' }}>
           {'Xóa tất cả sản phẩm trong giỏ hàng?'}
         </DialogTitle>
-        <DialogContent>
-          {/* <DialogContentText id="alert-dialog-description">
-            
-          </DialogContentText> */}
-        </DialogContent>
+        <DialogContent></DialogContent>
         <DialogActions>
           <Button onClick={handleCloses}>Hủy bỏ</Button>
           <Button onClick={handleClose} autoFocus>

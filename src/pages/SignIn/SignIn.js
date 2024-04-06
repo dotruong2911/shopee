@@ -1,12 +1,12 @@
 import Content from 'pages/SignIn/Content/Content';
-import AppBarr from 'pages/SignIn/AppBar/AppBar';
+import AppBarr from 'component/AppBar';
 import styles from './SignIn.module.scss';
 
 function SignIn() {
   return (
     <div className={styles.container}>
       <div className={styles.appbar}>
-        <AppBarr />
+        <AppBarr name="Đăng nhập" />
       </div>
       <div className={styles.content}>
         <Content />

@@ -1,11 +1,10 @@
-import { SatelliteAlt } from '@mui/icons-material';
 import { createSlice } from '@reduxjs/toolkit';
 
 export const category = createSlice({
   name: 'category',
   initialState: {
     name: '',
-    search: '',
+    search: ' ',
   },
   reducers: {
     addCategory: (state, action) => {

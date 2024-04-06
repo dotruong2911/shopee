@@ -1,7 +1,7 @@
 import { Box, Paper, TextField, Typography } from '@mui/material';
 import styles from './Form.module.scss';
 import { Link, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { addUser, addPhone } from '../../../../redux/reducer';
@@ -9,6 +9,8 @@ import { addUser, addPhone } from '../../../../redux/reducer';
 function Form() {
   const dispatch = useDispatch();
   const [listUser, setListUser] = useState([]);
+  const navigate = useNavigate();
+
   useEffect(() => {
     async function getUser() {
       try {
@@ -85,7 +87,7 @@ function Form() {
     }
   };
 
-  const navigate = useNavigate();
+  
 
   return (
     <Paper className={styles.container}>

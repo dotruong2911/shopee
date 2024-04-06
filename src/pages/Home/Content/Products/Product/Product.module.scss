@@ -1,6 +1,22 @@
+@media (min-width: 1024px) {
+  .paper {
+    width: 185px;
+  }
+}
+
+@media (min-width: 740px) and (max-width: 1024px) {
+  .paper {
+    width: 150px;
+  }
+}
+
 .paper {
   outline: none;
   box-sizing: border-box;
+
+  height: 270px;
+  display: flex;
+  flex-wrap: wrap;
   &:hover {
     border: 1px solid red;
   }

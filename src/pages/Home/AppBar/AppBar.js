@@ -104,7 +104,6 @@ function AppBar() {
                 ...search,
                 [e.target.name]: e.target.value,
               });
-              // dispatch(addSearch(e.target.value));
             }}
           ></input>
 

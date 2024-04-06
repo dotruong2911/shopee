@@ -5,10 +5,10 @@ import { useState } from 'react';
 
 function Tab() {
   const dispatch = useDispatch();
-  const [type, setType] = useState('');
+  const [type, setType] = useState(' ');
   const handleCategory = (e) => {
     e.target.id === 'Tất cả'
-      ? dispatch(addCategory(''))
+      ? dispatch(addCategory(' '))
       : dispatch(addCategory(e.target.id));
     setType(e.target.id);
   };

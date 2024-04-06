@@ -18,17 +18,16 @@ function Product() {
     <Grid container>
       {products.map((data) => {
         return (
-          <Grid item md={2} key={data._id}>
+          <Grid item key={data._id}>
             <Paper
               onClick={handleSelect}
               name={data._id}
               elevation={10}
               sx={{
-                width: '185px',
-                height: '270px',
                 p: '10px',
                 cursor: 'pointer',
                 mb: '20px',
+                ml: '5px',
               }}
               className={styles.paper}
             >
@@ -71,7 +70,7 @@ function Product() {
               <Typography
                 component="span"
                 variant="small"
-                sx={{ color: 'var(--orange)', mb: '10px' }}
+                sx={{ color: 'var(--orange)', mb: '10px', fontSize: '15px' }}
               >
                 {new Intl.NumberFormat('vi-VN', {
                   style: 'currency',

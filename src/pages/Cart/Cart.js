@@ -358,11 +358,7 @@ export default function Cart() {
               headCells={[]}
             />
             Chọn tất cả ({totalQuantity})
-            <span
-              // aria-disabled="true"
-              id={arrId}
-              style={{ cursor: 'pointer' }}
-            >
+            <span id={arrId} style={{ cursor: 'pointer' }}>
               <AlertDialog name="xoá" id={arrId} deletes={handleDeleteAll} />
             </span>
             <span
