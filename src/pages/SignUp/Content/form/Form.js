@@ -75,7 +75,8 @@ function Form() {
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,30}$/;
 
     if (input.password && !check.test(input.password)) {
-      inputError.password = 'mật khẩu không hợp lệ';
+      inputError.password =
+        'mật khẩu phải bao gồm chữ viết thường, chữ viết hoa, chữ số và ký tự đặc biệt';
     }
   };
 
@@ -135,7 +136,7 @@ function Form() {
           Đăng ký
         </Typography>
         <Box
-          sx={{ width: '100%', p: '0 10%', position: 'relative', mb: '15px' }}
+          sx={{ width: '100%', p: '0 10%', position: 'relative', mb: '35px' }}
         >
           <TextField
             sx={{ width: '100%' }}
@@ -150,7 +151,7 @@ function Form() {
           </Typography>
         </Box>
         <Box
-          sx={{ width: '100%', p: '0 10%', position: 'relative', mb: '15px' }}
+          sx={{ width: '100%', p: '0 10%', position: 'relative', mb: '35px' }}
         >
           <TextField
             placeholder="Họ tên"
@@ -165,7 +166,7 @@ function Form() {
           </Typography>
         </Box>
         <Box
-          sx={{ width: '100%', p: '0 10%', position: 'relative', mb: '15px' }}
+          sx={{ width: '100%', p: '0 10%', position: 'relative', mb: '35px' }}
         >
           <TextField
             placeholder="Mật khẩu"
